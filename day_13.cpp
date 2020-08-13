@@ -1,9 +1,9 @@
 #include <iostream>
 #include <string>
-#include <vector>
+#include <set>
 
 using std::string;
-using std::vector;
+using std::set;
 
 class CombinationIterator {
 public:
@@ -11,37 +11,32 @@ public:
         for (int i = 0; i < (1 << characters.size()); ++i) {
             string s;
             for (int j = 0; j < characters.size(); ++j) {
-                //  1<<j shifts the 1 for j places and then we check j-th binary digit of i
                 if (i & (1 << j)) {
                     s += characters[j];
                 }
             }
             if (s.size() == combinationLength) {
-                combinations.push_back(s);
+                combinations.insert(s);
             }
         }
-        combinations_len = combinations.size();
+        it = begin(combinations);
     }
 
     string next() {
-        return combinations[i++];
+        return *it++;
     }
 
     bool hasNext() {
-        bool out = true;
-        if (i >= combinations_len)
-            out = false;
-        return out;
+        return !(it == end(combinations));
     }
 
 private:
-    vector<string> combinations;
-    int combinations_len;
-    int i = 0;
+    set<string> combinations;
+    set <string> :: iterator it;
 };
 
 int main() {
-    auto iterator = new CombinationIterator("abc", 2); // creates the iterator.
+    auto iterator = new CombinationIterator("bvwz", 2); // creates the iterator.
 
     std::cout << iterator->next() << std::endl; // returns "ab"
     std::cout << iterator->hasNext() << std::endl; // returns true
