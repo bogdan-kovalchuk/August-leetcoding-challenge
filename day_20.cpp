@@ -15,7 +15,18 @@ struct ListNode {
 class Solution {
 public:
     void reorderList(ListNode *head) {
-
+        if (!head || !head->next) return;
+        auto last = head;
+        ListNode *pre_last;
+        while (last->next) {
+            pre_last = last;
+            last = last->next;
+        }
+        pre_last->next = nullptr;
+        auto next = head->next;
+        reorderList(next);
+        head->next = last;
+        last->next = next;
     }
 };
 
@@ -27,6 +38,7 @@ int main() {
     list->next->next = new ListNode(3);
     list->next->next->next = new ListNode(4);
     list->next->next->next->next = new ListNode(5);
+
 
     Solution solution;
     solution.reorderList(list);
