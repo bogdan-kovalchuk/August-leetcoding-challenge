@@ -18,7 +18,19 @@ struct TreeNode {
 class Solution {
 public:
     int sumOfLeftLeaves(TreeNode *root) {
+        int sum = 0;
+        bfs(root, sum, false);
+        return sum;
+    }
 
+    void bfs(TreeNode *root, int &sum, bool left) {
+        if (root == nullptr) return;
+        if (left && !root->left && !root->right) {
+            sum += root->val;
+            return;
+        }
+        bfs(root->left, sum, true);
+        bfs(root->right, sum, false);
     }
 };
 
