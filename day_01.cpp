@@ -40,3 +40,20 @@ int main() {
     return 0;
 }
 
+
+// --- Alternative: count-based validation ---
+// Time O(n), Space O(1) - single pass counting uppercase
+// Edge cases: single char always valid; all-lower and all-upper both valid
+// Compare: original uses two bool flags tracking mixed case; this counts
+// uppercase total and checks three valid patterns directly
+class SolutionCount {
+public:
+    static bool detectCapitalUse(string word) {
+        int upper = 0;
+        for (char c : word)
+            if (c >= 'A' && c <= 'Z') ++upper;
+        return upper == 0
+            || upper == (int)word.size()
+            || (upper == 1 && word[0] >= 'A' && word[0] <= 'Z');
+    }
+};
