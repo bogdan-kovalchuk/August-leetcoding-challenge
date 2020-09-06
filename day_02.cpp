@@ -131,3 +131,16 @@ public:
         return find(b.begin(), b.end(), key) != b.end();
     }
 };
+// --- Alternative: bitset for bounded keys [0, 10^6] ---
+// Time O(1) all ops, Space O(1) fixed ~125 KB
+// Edge cases: only works for non-negative keys up to 10^6
+// Compare: linked list is O(n) per op with no key-range limit;
+// bitset trades generality for constant-time everything
+#include <bitset>
+class MyHashSetBitset {
+    bitset<1000001> bs;
+public:
+    void add(int key)    { bs.set(key); }
+    void remove(int key) { bs.reset(key); }
+    bool contains(int key) { return bs.test(key); }
+};
