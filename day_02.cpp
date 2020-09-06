@@ -106,3 +106,28 @@ int main() {
         }
     }
 }
+// --- Alternative: bucket array with vector chaining ---
+// Time O(1) avg add/remove/contains, Space O(n + num_buckets)
+// Edge cases: key=0 handled correctly; duplicate add is no-op via find
+// Compare: original uses a single linked list O(n) per op;
+// bucket approach distributes keys for O(1) amortized
+#include <algorithm>
+class MyHashSetBucket {
+    static constexpr int BUCKETS = 1009;
+    vector<int> table[BUCKETS];
+    int hash(int key) { return key % BUCKETS; }
+public:
+    void add(int key) {
+        auto& b = table[hash(key)];
+        if (find(b.begin(), b.end(), key) == b.end())
+            b.push_back(key);
+    }
+    void remove(int key) {
+        auto& b = table[hash(key)];
+        b.erase(find(b.begin(), b.end(), key));
+    }
+    bool contains(int key) {
+        auto& b = table[hash(key)];
+        return find(b.begin(), b.end(), key) != b.end();
+    }
+};
