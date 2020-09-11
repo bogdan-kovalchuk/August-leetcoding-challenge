@@ -31,3 +31,28 @@ int main() {
 
 
 
+
+// --- Alternative: two-pointer in-place ---
+// Time O(n), Space O(1) - no extra string allocation
+// Edge cases: empty string is palindrome; single alphanumeric char valid
+// Compare: original builds filtered string O(n) space then checks;
+// two-pointer skips non-alnum on the fly with zero allocation
+class SolutionTwoPtr {
+    static bool isAlnum(char c) {
+        return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')
+            || (c >= '0' && c <= '9');
+    }
+    static char toLower(char c) {
+        return (c >= 'A' && c <= 'Z') ? c + ('a' - 'A') : c;
+    }
+public:
+    bool isPalindrome(const string &s) {
+        int lo = 0, hi = (int)s.size() - 1;
+        while (lo < hi) {
+            while (lo < hi && !isAlnum(s[lo])) ++lo;
+            while (lo < hi && !isAlnum(s[hi])) --hi;
+            if (toLower(s[lo++]) != toLower(s[hi--])) return false;
+        }
+        return true;
+    }
+};
