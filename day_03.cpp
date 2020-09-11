@@ -56,3 +56,26 @@ public:
         return true;
     }
 };
+// --- Alternative: recursive two-pointer ---
+// Time O(n), Space O(n) call stack - elegant but uses stack frames
+// Edge cases: same as iterative; stack depth ~n/2 for long strings
+// Compare: same logic as two-pointer but functional style;
+// trades O(1) space for O(n) stack depth
+class SolutionRecursive {
+    static bool isAlnum(char c) {
+        return (c >= '0' && c <= '9') || (c >= 'a' && c <= 'z')
+            || (c >= 'A' && c <= 'Z');
+    }
+    static char toLower(char c) {
+        return (c >= 'A' && c <= 'Z') ? c + 32 : c;
+    }
+    bool check(const string &s, int lo, int hi) {
+        if (lo >= hi) return true;
+        if (!isAlnum(s[lo])) return check(s, lo + 1, hi);
+        if (!isAlnum(s[hi])) return check(s, lo, hi - 1);
+        if (toLower(s[lo]) != toLower(s[hi])) return false;
+        return check(s, lo + 1, hi - 1);
+    }
+public:
+    bool isPalindrome(const string &s) { return check(s, 0, (int)s.size() - 1); }
+};
