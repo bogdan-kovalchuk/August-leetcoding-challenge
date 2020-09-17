@@ -32,3 +32,17 @@ public:
         return n > 0 && (n & (n - 1)) == 0 && (n & 0x55555555) != 0;
     }
 };
+// --- Alternative: recursive division by 4 ---
+// Time O(log4 n), Space O(log4 n) stack
+// Edge cases: n<=0 returns false; n=1 returns true (4^0 = 1)
+// Compare: log approach is O(1) but uses floats; recursion is exact
+// integer math with O(log n) overhead
+class SolutionRecurse {
+public:
+    bool isPowerOfFour(int n) {
+        if (n <= 0) return false;
+        if (n == 1) return true;
+        if (n % 4 != 0) return false;
+        return isPowerOfFour(n / 4);
+    }
+};
