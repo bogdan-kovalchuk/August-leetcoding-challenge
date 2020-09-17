@@ -59,3 +59,21 @@ public:
         return n == 1;
     }
 };
+// --- Alternative: precomputed lookup table ---
+// Time O(1), Space O(1) - 16 constants for all int32 powers of 4
+// Edge cases: exhaustive for 32-bit signed int; no overflow or precision risk
+// Compare: fastest possible - single comparison vs log/division/bitwise;
+// 4^0..4^15 covers entire int32 range (4^15 = 1073741824 < INT_MAX)
+class SolutionLookup {
+public:
+    bool isPowerOfFour(int n) {
+        static const int powers[] = {
+            1, 4, 16, 64, 256, 1024, 4096, 16384,
+            65536, 262144, 1048576, 4194304, 16777216,
+            67108864, 268435456, 1073741824
+        };
+        for (int p : powers)
+            if (n == p) return true;
+        return false;
+    }
+};
