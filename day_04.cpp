@@ -46,3 +46,16 @@ public:
         return isPowerOfFour(n / 4);
     }
 };
+// --- Alternative: iterative modulo check ---
+// Time O(log4 n), Space O(1)
+// Edge cases: n<=0 returns false; handles INT_MAX safely (no overflow)
+// Compare: same logic as recursive but O(1) space; vs log approach,
+// avoids all floating-point concerns
+class SolutionIterative {
+public:
+    bool isPowerOfFour(int n) {
+        if (n <= 0) return false;
+        while (n % 4 == 0) n /= 4;
+        return n == 1;
+    }
+};
