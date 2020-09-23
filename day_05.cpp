@@ -113,3 +113,49 @@ public:
         return false;
     }
 };
+// --- Alternative: iterative BFS search with explicit queue ---
+// Time O(n * 26^d) worst case with d dots, Space O(queue width)
+// Edge cases: avoids stack overflow on deep tries; same correctness as recursive
+// Compare: recursive DFS uses call stack O(depth); BFS uses heap queue O(width)
+// - BFS may use more memory for wide tries but will not overflow the stack
+#include <queue>
+class WordDictionaryBFS {
+    struct TrieNode {
+        TrieNode* children[26] = {};
+        bool isEnd = false;
+    };
+    TrieNode* root = new TrieNode();
+public:
+    void addWord(const string& word) {
+        auto* cur = root;
+        for (char c : word) {
+            if (!cur->children[c - 'a'])
+                cur->children[c - 'a'] = new TrieNode();
+            cur = cur->children[c - 'a'];
+        }
+        cur->isEnd = true;
+    }
+    bool search(const string& word) {
+        queue<TrieNode*> q;
+        q.push(root);
+        for (char c : word) {
+            int sz = q.size();
+            while (sz--) {
+                auto* node = q.front(); q.pop();
+                if (c == '.') {
+                    for (int i = 0; i < 26; ++i)
+                        if (node->children[i])
+                            q.push(node->children[i]);
+                } else {
+                    if (node->children[c - 'a'])
+                        q.push(node->children[c - 'a']);
+                }
+            }
+        }
+        while (!q.empty()) {
+            if (q.front()->isEnd) return true;
+            q.pop();
+        }
+        return false;
+    }
+};
