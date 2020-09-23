@@ -83,3 +83,33 @@ int main() {
 
     return 0;
 }
+
+// --- Alternative: hash set grouped by word length ---
+// Time O(n*m) search worst case with many dots, Space O(total chars stored)
+// Edge cases: dots match any single char; length filter prunes non-matches early
+// Compare: trie is O(m) for no-dot words but branches 26 ways per dot;
+// hash set approach is simpler, uses standard containers, and prunes by length
+#include <unordered_map>
+#include <unordered_set>
+class WordDictionaryHash {
+    unordered_map<int, unordered_set<string>> words;
+public:
+    void addWord(const string& word) {
+        words[word.size()].insert(word);
+    }
+    bool search(const string& word) {
+        auto it = words.find(word.size());
+        if (it == words.end()) return false;
+        for (const auto& w : it->second) {
+            bool match = true;
+            for (int i = 0; i < (int)word.size(); ++i) {
+                if (word[i] != '.' && word[i] != w[i]) {
+                    match = false;
+                    break;
+                }
+            }
+            if (match) return true;
+        }
+        return false;
+    }
+};
