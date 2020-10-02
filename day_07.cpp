@@ -106,3 +106,31 @@ public:
         return res;
     }
 };
+// --- Alternative: DFS collecting tuples then sort ---
+// Time O(n log n), Space O(n) - avoids nested map overhead
+// Edge cases: tuple sort (col, row, val) handles all tie-breaking rules
+// Compare: original map<int,map<int,set<int>>> auto-sorts but has
+// O(log n) per insertion; vector + single sort is simpler and faster
+class SolutionDFSSort {
+    vector<tuple<int,int,int>> cells;
+    void dfs(TreeNode* r, int col, int row) {
+        if (!r) return;
+        cells.emplace_back(col, row, r->val);
+        dfs(r->left, col - 1, row + 1);
+        dfs(r->right, col + 1, row + 1);
+    }
+public:
+    vector<vector<int>> verticalTraversal(TreeNode *root) {
+        cells.clear();
+        dfs(root, 0, 0);
+        sort(cells.begin(), cells.end());
+        vector<vector<int>> res;
+        int prevCol = INT_MIN;
+        for (auto& t : cells) {
+            int col = get<0>(t), val = get<2>(t);
+            if (col != prevCol) { res.emplace_back(); prevCol = col; }
+            res.back().push_back(val);
+        }
+        return res;
+    }
+};
