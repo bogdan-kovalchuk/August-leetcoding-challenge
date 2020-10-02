@@ -134,3 +134,34 @@ public:
         return res;
     }
 };
+// --- Alternative: iterative DFS with explicit stack ---
+// Time O(n log n), Space O(n) - no recursion depth limit
+// Edge cases: handles very deep or skewed trees without stack overflow
+// Compare: original recursive DFS may overflow stack on degenerate trees;
+// iterative version uses heap-allocated stack - same logic, safer
+class SolutionIterativeDFS {
+public:
+    vector<vector<int>> verticalTraversal(TreeNode *root) {
+        if (!root) return {};
+        vector<tuple<int,int,int>> cells;
+        stack<tuple<TreeNode*,int,int>> stk;
+        stk.push(make_tuple(root, 0, 0));
+        while (!stk.empty()) {
+            auto top = stk.top(); stk.pop();
+            TreeNode* node = get<0>(top);
+            int col = get<1>(top), row = get<2>(top);
+            cells.emplace_back(col, row, node->val);
+            if (node->right) stk.push(make_tuple(node->right, col + 1, row + 1));
+            if (node->left)  stk.push(make_tuple(node->left,  col - 1, row + 1));
+        }
+        sort(cells.begin(), cells.end());
+        vector<vector<int>> res;
+        int prevCol = INT_MIN;
+        for (auto& t : cells) {
+            int col = get<0>(t), val = get<2>(t);
+            if (col != prevCol) { res.emplace_back(); prevCol = col; }
+            res.back().push_back(val);
+        }
+        return res;
+    }
+};
