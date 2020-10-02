@@ -165,3 +165,32 @@ public:
         return res;
     }
 };
+// --- Alternative: BFS with ordered multimap per column ---
+// Time O(n log n), Space O(n)
+// Edge cases: multimap auto-sorts values at same (row, val) for correct ordering
+// Compare: original uses nested map+set; this uses one map to multimap
+// - fewer nesting levels but same asymptotic complexity
+class SolutionBFSMulti {
+public:
+    vector<vector<int>> verticalTraversal(TreeNode *root) {
+        if (!root) return {};
+        map<int, multimap<int,int>> columns;
+        queue<pair<TreeNode*, pair<int,int>>> q;
+        q.push({root, {0, 0}});
+        while (!q.empty()) {
+            auto front = q.front(); q.pop();
+            TreeNode* node = front.first;
+            int col = front.second.first, row = front.second.second;
+            columns[col].insert({row, node->val});
+            if (node->left)  q.push({node->left,  {col - 1, row + 1}});
+            if (node->right) q.push({node->right, {col + 1, row + 1}});
+        }
+        vector<vector<int>> res;
+        for (auto& colEntry : columns) {
+            res.emplace_back();
+            for (auto& rowEntry : colEntry.second)
+                res.back().push_back(rowEntry.second);
+        }
+        return res;
+    }
+};
