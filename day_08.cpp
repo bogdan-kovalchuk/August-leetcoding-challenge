@@ -84,3 +84,40 @@ public:
         return count;
     }
 };
+// --- Alternative: iterative DFS with explicit stack and prefix map ---
+// Time O(n), Space O(n) - avoids recursion depth limit
+// Edge cases: must save/restore map state on backtrack - same prefix-sum logic
+// Compare: recursive prefix-sum DFS is cleaner; iterative version uses
+// explicit stack with backtrack markers to maintain prefix frequency map
+class SolutionIterative {
+public:
+    int pathSum(TreeNode* root, int sum) {
+        if (!root) return 0;
+        int count = 0, runningSum = 0;
+        unordered_map<int,int> freq;
+        stack<pair<TreeNode*,int>> stk;
+        stk.push({root, 0});
+        while (!stk.empty()) {
+            auto& top = stk.top();
+            TreeNode* node = top.first;
+            int phase = top.second;
+            if (phase == 0) {
+                runningSum += node->val;
+                if (runningSum == sum) ++count;
+                auto it = freq.find(runningSum - sum);
+                if (it != freq.end()) count += it->second;
+                ++freq[runningSum];
+                top.second = 1;
+                if (node->left) stk.push({node->left, 0});
+            } else if (phase == 1) {
+                top.second = 2;
+                if (node->right) stk.push({node->right, 0});
+            } else {
+                --freq[runningSum];
+                runningSum -= node->val;
+                stk.pop();
+            }
+        }
+        return count;
+    }
+};
