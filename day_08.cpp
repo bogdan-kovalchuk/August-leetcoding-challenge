@@ -54,3 +54,33 @@ int main() {
     return 0;
 }
 
+
+// --- Alternative: prefix-sum + hash map during single DFS ---
+// Time O(n), Space O(n) - vs O(n^2) brute force above
+// Edge cases: handles negative node values; empty tree returns 0
+// Compare: original restarts sum_up from every node - O(n^2) worst case;
+// prefix-sum approach tracks running sum from root and counts matches
+// in one pass using a frequency map of prefix sums seen so far
+#include <unordered_map>
+class SolutionPrefix {
+    int count = 0;
+    unordered_map<int,int> prefixFreq;
+    void dfs(TreeNode* node, int runningSum, int target) {
+        if (!node) return;
+        runningSum += node->val;
+        if (runningSum == target) ++count;
+        auto it = prefixFreq.find(runningSum - target);
+        if (it != prefixFreq.end()) count += it->second;
+        ++prefixFreq[runningSum];
+        dfs(node->left, runningSum, target);
+        dfs(node->right, runningSum, target);
+        --prefixFreq[runningSum];
+    }
+public:
+    int pathSum(TreeNode* root, int sum) {
+        count = 0;
+        prefixFreq.clear();
+        dfs(root, 0, sum);
+        return count;
+    }
+};
