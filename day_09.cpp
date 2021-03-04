@@ -126,5 +126,17 @@ int main() {
     run_comparison(grid3, "grid3");
     run_comparison(grid4, "grid4");
 
+    vector<vector<int>> grid5 = {{0, 0, 0}};
+    vector<vector<int>> grid6 = {{1, 1, 1}, {1, 1, 1}, {1, 1, 1}};
+    vector<vector<int>> grid7 = {{2}};
+    vector<vector<int>> grid8 = {{1}};
+    vector<vector<int>> grid9 = {{2, 1}, {1, 2}};
+
+    run_comparison(grid5, "grid5_empty");
+    run_comparison(grid6, "grid6_all_fresh");
+    run_comparison(grid7, "grid7_single_rotten");
+    run_comparison(grid8, "grid8_single_fresh");
+    run_comparison(grid9, "grid9_diagonal");
+
     return 0;
 }
