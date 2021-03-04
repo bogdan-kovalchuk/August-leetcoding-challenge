@@ -1,9 +1,12 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+#include <stack>
+#include <algorithm>
 
 using std::vector;
 using std::queue;
+using std::stack;
 
 class Solution {
 public:
@@ -43,6 +46,51 @@ public:
             }
         }
         return (fresh == 0) ? res : -1;
+    }
+};
+
+class SolutionDFS {
+public:
+    int orangesRotting(vector<vector<int>> &grid) {
+        int n = grid.size();
+        int m = grid[0].size();
+        vector<vector<int>> dist(n, vector<int>(m, 10000));
+        vector<vector<int>> dir = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < m; ++j) {
+                if (grid[i][j] == 2) {
+                    dist[i][j] = 0;
+                    stack<vector<int>> stk;
+                    stk.push({i, j});
+                    while (!stk.empty()) {
+                        auto curr = stk.top();
+                        stk.pop();
+                        for (auto d : dir) {
+                            int x = curr[0] + d[0];
+                            int y = curr[1] + d[1];
+                            if (x >= 0 && x < n && y >= 0 && y < m && grid[x][y] == 1) {
+                                if (dist[curr[0]][curr[1]] + 1 < dist[x][y]) {
+                                    dist[x][y] = dist[curr[0]][curr[1]] + 1;
+                                    stk.push({x, y});
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        int res = 0;
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < m; ++j) {
+                if (grid[i][j] == 1) {
+                    if (dist[i][j] == 10000) return -1;
+                    res = std::max(res, dist[i][j]);
+                }
+            }
+        }
+        return res;
     }
 };
 
