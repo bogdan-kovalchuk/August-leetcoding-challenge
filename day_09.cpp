@@ -10,6 +10,8 @@ using std::stack;
 
 class Solution {
 public:
+    // BFS approach: O(m*n) time, O(m*n) space for queue
+    // Each cell visited at most once; queue holds at most m*n elements
     int orangesRotting(vector<vector<int>> &grid) {
         int n = grid.size();
         int m = grid[0].size();
@@ -51,6 +53,9 @@ public:
 
 class SolutionDFS {
 public:
+    // DFS relaxation: O(k*m*n) time worst case where k = number of rotten sources,
+    // O(m*n) space for dist matrix and stack. Re-explores neighbors when shorter
+    // path found; less efficient than BFS but avoids modifying input grid.
     int orangesRotting(vector<vector<int>> &grid) {
         int n = grid.size();
         int m = grid[0].size();
