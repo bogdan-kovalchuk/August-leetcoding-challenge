@@ -110,11 +110,21 @@ int main() {
                                  {1},
                                  {2}};
 
-    Solution solution;
-    std::cout << solution.orangesRotting(grid1) << std::endl;
-    std::cout << solution.orangesRotting(grid2) << std::endl;
-    std::cout << solution.orangesRotting(grid3) << std::endl;
-    std::cout << solution.orangesRotting(grid4) << std::endl;
+    Solution bfs;
+    SolutionDFS dfs;
+
+    auto run_comparison = [&](vector<vector<int>> g, const char *label) {
+        vector<vector<int>> copy1 = g, copy2 = g;
+        int r1 = bfs.orangesRotting(copy1);
+        int r2 = dfs.orangesRotting(copy2);
+        std::cout << label << ": BFS=" << r1 << " DFS=" << r2
+                  << (r1 == r2 ? " [match]" : " [MISMATCH]") << std::endl;
+    };
+
+    run_comparison(grid1, "grid1");
+    run_comparison(grid2, "grid2");
+    run_comparison(grid3, "grid3");
+    run_comparison(grid4, "grid4");
 
     return 0;
 }
