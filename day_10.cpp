@@ -16,11 +16,26 @@ public:
     }
 };
 
+class SolutionHorner {
+public:
+    int titleToNumber(string s) {
+        int result = 0;
+        for (char ch : s) {
+            result = result * 26 + (ch - 'A' + 1);
+        }
+        return result;
+    }
+};
+
 int main() {
-    string s = "ZY";
-
-    Solution solution;
-    std::cout << solution.titleToNumber(s) << std::endl;
-
+    string tests[] = {"A", "Z", "AA", "AB", "ZY", "FXSHRXW"};
+    Solution orig;
+    SolutionHorner horner;
+    for (const auto &t : tests) {
+        int r1 = orig.titleToNumber(t);
+        int r2 = horner.titleToNumber(t);
+        std::cout << t << ": orig=" << r1 << " horner=" << r2
+                  << (r1 == r2 ? " [match]" : " [MISMATCH]") << std::endl;
+    }
     return 0;
 }
