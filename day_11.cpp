@@ -6,6 +6,8 @@ using std::vector;
 
 class Solution {
 public:
+    // Binary search after sort: O(n log n) time, O(1) extra space
+    // Sorts in-place then binary searches for the partition point
     int hIndex(vector<int> &citations) {
         if (citations.empty()) return 0;
         int start = 0, end = citations.size() - 1;
@@ -23,6 +25,8 @@ public:
 
 class SolutionCounting {
 public:
+    // Counting sort: O(n) time, O(n) space for bucket array
+    // Avoids comparison-based sort; caps citations at n since h <= n always
     int hIndex(vector<int> &citations) {
         int n = citations.size();
         vector<int> buckets(n + 1, 0);
