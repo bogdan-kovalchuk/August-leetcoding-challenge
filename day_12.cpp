@@ -17,6 +17,18 @@ public:
     }
 };
 
+class SolutionFormula {
+public:
+    vector<int> getRow(int rowIndex) {
+        vector<int> res(rowIndex + 1);
+        res[0] = 1;
+        for (int k = 1; k <= rowIndex; ++k) {
+            res[k] = (long long)res[k - 1] * (rowIndex - k + 1) / k;
+        }
+        return res;
+    }
+};
+
 int main() {
     int rowIndex = 3;
     Solution solution;
