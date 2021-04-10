@@ -30,11 +30,19 @@ public:
 };
 
 int main() {
-    int rowIndex = 3;
-    Solution solution;
-    auto res = solution.getRow(rowIndex);
-    for (auto num : res) {
-        std::cout << num << " ";
+    Solution orig;
+    SolutionFormula formula;
+    int test_rows[] = {0, 1, 2, 3, 5, 10};
+    const char *labels[] = {"row0", "row1", "row2", "row3", "row5", "row10"};
+
+    for (int t = 0; t < 6; ++t) {
+        auto r1 = orig.getRow(test_rows[t]);
+        auto r2 = formula.getRow(test_rows[t]);
+        std::cout << labels[t] << ": orig=[";
+        for (int i = 0; i < (int)r1.size(); ++i) std::cout << r1[i] << (i + 1 < (int)r1.size() ? "," : "");
+        std::cout << "] formula=[";
+        for (int i = 0; i < (int)r2.size(); ++i) std::cout << r2[i] << (i + 1 < (int)r2.size() ? "," : "");
+        std::cout << "]" << (r1 == r2 ? " [match]" : " [MISMATCH]") << std::endl;
     }
     return 0;
 }
