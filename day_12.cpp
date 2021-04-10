@@ -44,5 +44,16 @@ int main() {
         for (int i = 0; i < (int)r2.size(); ++i) std::cout << r2[i] << (i + 1 < (int)r2.size() ? "," : "");
         std::cout << "]" << (r1 == r2 ? " [match]" : " [MISMATCH]") << std::endl;
     }
+
+    int edge_rows[] = {15, 20, 30};
+    const char *edge_labels[] = {"row15", "row20", "row30"};
+    for (int t = 0; t < 3; ++t) {
+        auto r1 = orig.getRow(edge_rows[t]);
+        auto r2 = formula.getRow(edge_rows[t]);
+        bool match = (r1 == r2);
+        std::cout << edge_labels[t] << ": size=" << r1.size()
+                  << (match ? " [match]" : " [MISMATCH]") << std::endl;
+    }
+
     return 0;
 }
