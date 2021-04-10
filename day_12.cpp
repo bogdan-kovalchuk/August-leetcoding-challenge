@@ -5,6 +5,8 @@ using std::vector;
 
 class Solution {
 public:
+    // In-place additive: O(k^2) time, O(k) space (single array, right-to-left update)
+    // Builds each row from the previous by summing adjacent elements
     vector<int> getRow(int rowIndex) {
         vector<int> res(rowIndex + 1, 0);
         res[0] = 1;
@@ -19,6 +21,9 @@ public:
 
 class SolutionFormula {
 public:
+    // Multiplicative formula: O(k) time, O(k) space
+    // C(n,k) = C(n,k-1) * (n-k+1) / k; single pass, no nested loops
+    // Risk: intermediate overflow for large n (mitigated by long long cast)
     vector<int> getRow(int rowIndex) {
         vector<int> res(rowIndex + 1);
         res[0] = 1;
