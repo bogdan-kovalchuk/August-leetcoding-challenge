@@ -9,6 +9,8 @@ using std::vector;
 
 class CombinationIterator {
 public:
+    // Bitmask enumeration + sorted set: O(2^n * n) time, O(C(n,k) * k) space
+    // Enumerates all 2^n subsets, filters by length, inserts into ordered set
     CombinationIterator(string characters, int combinationLength) {
         for (int i = 0; i < (1 << characters.size()); ++i) {
             string s;
@@ -39,6 +41,9 @@ private:
 
 class CombinationIteratorBacktrack {
 public:
+    // Recursive backtracking: O(C(n,k) * k) time, O(C(n,k) * k) space
+    // Generates only valid k-length combinations in lexicographic order;
+    // avoids enumerating all 2^n subsets
     CombinationIteratorBacktrack(string characters, int combinationLength) {
         string current;
         backtrack(characters, combinationLength, 0, current);
