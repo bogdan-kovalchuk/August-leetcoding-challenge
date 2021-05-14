@@ -28,6 +28,8 @@ public:
 };
 class SolutionStartSort {
 public:
+    // Start-sort forward sweep: O(n log n) time, O(1) extra space
+    // Sort by start; on overlap keep the shorter interval (min end), discard the other
     int eraseOverlapIntervals(vector<vector<int>> &intervals) {
         if (intervals.size() == 0) return 0;
         std::sort(intervals.begin(), intervals.end(), [](const vector<int> &a, const vector<int> &b) {
