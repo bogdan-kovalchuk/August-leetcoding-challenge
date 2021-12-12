@@ -6,6 +6,7 @@ using std::vector;
 
 class Solution {
 public:
+    // DP table: O(n) time, O(n) space (k=2 rows of length n)
     int maxProfit(vector<int> prices) {
         if (prices.empty()) return 0;
         vector<vector<int>> dp(3, vector<int>(prices.size(), 0));
@@ -22,6 +23,7 @@ public:
 
 class SolutionStateMachine {
 public:
+    // State machine: O(n) time, O(1) space
     int maxProfit(vector<int> prices) {
         int buy1 = INT_MIN, sell1 = 0, buy2 = INT_MIN, sell2 = 0;
         for (int p : prices) {
