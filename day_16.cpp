@@ -35,9 +35,27 @@ public:
 };
 
 int main() {
-    vector<int> prices = {3, 3, 5, 0, 0, 3, 1, 4};
-    Solution solution;
-    std::cout << solution.maxProfit(prices) << std::endl;
+    Solution orig;
+    SolutionStateMachine sm;
+
+    auto run = [&](vector<int> prices, const char *label) {
+        int r1 = orig.maxProfit(prices);
+        int r2 = sm.maxProfit(prices);
+        std::cout << label << ": orig=" << r1 << " sm=" << r2
+                  << (r1 == r2 ? " [match]" : " [MISMATCH]") << std::endl;
+    };
+
+    run({3, 3, 5, 0, 0, 3, 1, 4}, "basic");
+    run({1, 2, 3, 4, 5}, "ascending");
+    run({5, 4, 3, 2, 1}, "descending");
+    run({}, "empty");
+    run({1}, "single");
+    run({1, 2}, "two_up");
+    run({2, 1}, "two_down");
+    run({1, 2, 4, 2, 5, 7, 2, 4, 9, 0}, "multi_peak");
+    run({3, 3, 5, 0, 0, 3, 1, 4}, "leetcode_example");
+    run({1, 2, 3, 2, 2}, "plateau");
+
     return 0;
 }
 
