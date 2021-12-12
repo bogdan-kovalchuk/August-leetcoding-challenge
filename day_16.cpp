@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <climits>
+#include <cstddef>
 
 using std::vector;
 
@@ -12,7 +13,7 @@ public:
         vector<vector<int>> dp(3, vector<int>(prices.size(), 0));
         for (int k = 1; k <= 2; k++) {
             int min = prices[0];
-            for (int i = 1; i < prices.size(); i++) {
+            for (std::size_t i = 1; i < prices.size(); i++) {
                 min = std::min(min, prices[i] - dp[k - 1][i - 1]);
                 dp[k][i] = std::max(dp[k][i - 1], prices[i] - min);
             }
@@ -39,10 +40,12 @@ public:
 int main() {
     Solution orig;
     SolutionStateMachine sm;
+    bool all_match = true;
 
     auto run = [&](vector<int> prices, const char *label) {
         int r1 = orig.maxProfit(prices);
         int r2 = sm.maxProfit(prices);
+        all_match = all_match && (r1 == r2);
         std::cout << label << ": orig=" << r1 << " sm=" << r2
                   << (r1 == r2 ? " [match]" : " [MISMATCH]") << std::endl;
     };
@@ -58,6 +61,6 @@ int main() {
     run({3, 3, 5, 0, 0, 3, 1, 4}, "leetcode_example");
     run({1, 2, 3, 2, 2}, "plateau");
 
-    return 0;
+    return all_match ? 0 : 1;
 }
 
